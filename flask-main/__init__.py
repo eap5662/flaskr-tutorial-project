@@ -4,7 +4,7 @@ from flask import Flask
 
 def create_app(test_config=None):
     '''this function is the application factory. It is used to configure and return the app'''
-    app = Flask(__name__, instance_path=r'C:\Users\ihelp\flaskr-github-repo-2\flaskr-tutorial-project',
+    app = Flask(__name__, instance_path=r'C:\Users\ihelp\flaskr-tutorial-project',
                 instance_relative_config=True)  # app is the instance of Flask class
     app.config.from_mapping(
         SECRET_KEY='dev',
