@@ -81,3 +81,13 @@ def logout():
     '''removes the user_id from the session. Then load_logged_in_user won't load a user on subsequent requests'''
     session.clear()
     return redirect(url_for('index'))
+
+def login_required(view):
+    '''takes a view as a parameter and returns the wrapped view...'''
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+    return wrapped_view
