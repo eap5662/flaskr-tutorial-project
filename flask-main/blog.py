@@ -88,4 +88,13 @@ def update(id):
             return redirect(url_for('blog.index'))
     return render_template('blog/update.html', post=post)
 
+@bp.route('/<int: id>/delete', methods=('POST',))
+@auth.login_required
+def delete(id):
+    get_post(id)
+    database = db.get_db()
+    database.execute('DELETE FROM post WHERE id = ?', (id,))
+    database.commit()
+    return redirect(url_for('blog.index'))
+
 
