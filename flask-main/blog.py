@@ -17,3 +17,31 @@ def index():
         ' ORDER BY created DESC'
     ).fetchall()
     return render_template('blog/index.html', posts=posts)
+
+@bp.route('/create', methods=('GET', 'POST'))
+@auth.login_required
+def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        error = None
+
+        if not title:
+            error = "Title is required"
+
+        if error is not None:
+            flash(error)
+
+        else:
+            database = db.get_db()
+            database.execute(
+                'INSERT INTO post (title, body, author)'
+                ' values (?, ?, ?)',
+                (title, body, g.user['id'])
+            )
+            database.commit()
+            return redirect(url_for('blog.index'))
+
+    return render_template('blog/create.html')
+
+
